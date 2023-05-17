@@ -6,19 +6,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createComponent = void 0;
 const fs_1 = require("fs");
 const chalk_1 = __importDefault(require("chalk"));
-const path_1 = __importDefault(require("path"));
-let isTypescript = false;
-function createComponent(str, options) {
-    const processDir = path_1.default.resolve(process.cwd());
-    const packageJSON = (0, fs_1.readFileSync)(processDir + "/package.json", "utf-8");
+const const_1 = require("./const");
+const filecontents_1 = require("./filecontents");
+function createComponent(str) {
+    const packageJSON = (0, fs_1.readFileSync)(const_1.processDir + "/package.json", "utf-8");
     const file = JSON.parse(packageJSON);
     const projectDeps = [];
-    const srcDir = processDir + "/src/";
-    const featureDir = srcDir + str + "/";
-    const fileName = featureDir + str;
+    const featureDirectory = (0, const_1.featureDir)(str);
+    const fileDirectory = (0, const_1.fileDir)(str);
+    let isTypescript = false;
+    let createModuleCss = true;
     if (!file.dependencies["react"])
         return console.log(chalk_1.default.red("No React project found!"));
-    if (file.dependencies["typescript"]) {
+    if (file.devDependencies["typescript"]) {
         projectDeps.push("typescript");
         isTypescript = true;
     }
@@ -26,6 +26,7 @@ function createComponent(str, options) {
         switch (dep) {
             case "tailwindcss": {
                 projectDeps.push("tailwindcss");
+                createModuleCss = true;
                 break;
             }
             case "redux": {
@@ -36,15 +37,24 @@ function createComponent(str, options) {
                 projectDeps.push("react-router-dom");
                 break;
             }
-            default:
-                break;
         }
     }
+    const fileExtension = isTypescript ? ".ts" : ".js";
+    const componentExtension = isTypescript ? ".tsx" : ".js";
     try {
-        if (!(0, fs_1.existsSync)(featureDir)) {
-            (0, fs_1.mkdirSync)(featureDir);
+        if (!(0, fs_1.existsSync)(featureDirectory)) {
+            (0, fs_1.mkdirSync)(featureDirectory);
             for (let dep of projectDeps) {
-                console.log(dep);
+                switch (dep) {
+                    case "tailwindcss":
+                        if (createModuleCss)
+                            (0, fs_1.writeFileSync)(fileDirectory + ".module.css", "");
+                    case "redux":
+                        (0, fs_1.writeFileSync)(fileDirectory + ".store" + fileExtension, (0, filecontents_1.reduxContent)(str.toLowerCase()));
+                    case "react-router-dom":
+                    default:
+                        (0, fs_1.writeFileSync)(fileDirectory + componentExtension, (0, filecontents_1.componentContent)(str.charAt(0).toUpperCase() + str.slice(1)));
+                }
             }
         }
         else {

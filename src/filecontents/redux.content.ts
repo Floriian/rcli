@@ -1,7 +1,7 @@
 export const reduxContent = (name: string) => {
-    return `
+  return `
     import { createSlice } from "react-redux";
 
-    export const ${name} = createSlice({})
-    `
-}
+    export const ${name}Slice = createSlice({})
+    `;
+};
