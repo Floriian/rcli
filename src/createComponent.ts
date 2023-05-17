@@ -15,7 +15,7 @@ export function createComponent(str: string) {
 
   let isTypescript = false;
 
-  let createModuleCss = true;
+  let isTailwind = true;
 
   if (!file.dependencies["react"])
     return console.log(chalk.red("No React project found!"));
@@ -25,13 +25,13 @@ export function createComponent(str: string) {
     isTypescript = true;
   }
 
+  if (!file.devDependencies["tailwindcss"]) {
+    isTailwind = false;
+    projectDeps.push("tailwindcss");
+  }
+
   for (let [dep, _] of Object.entries(file.dependencies)) {
     switch (dep as AllDependencies) {
-      case "tailwindcss": {
-        projectDeps.push("tailwindcss");
-        createModuleCss = true;
-        break;
-      }
       case "redux": {
         projectDeps.push("redux");
         break;
@@ -53,8 +53,7 @@ export function createComponent(str: string) {
       for (let dep of projectDeps) {
         switch (dep as Dependencies) {
           case "tailwindcss":
-            if (createModuleCss)
-              writeFileSync(fileDirectory + ".module.css", "");
+            if (!isTailwind) writeFileSync(fileDirectory + ".module.css", "");
           case "redux":
             writeFileSync(
               fileDirectory + ".store" + fileExtension,
