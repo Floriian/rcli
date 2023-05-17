@@ -1,0 +1,17 @@
+{
+  "name": "R-CLI",
+  "version": "0.1.0",
+  "description": "An Angular-like CLI for React.",
+  "main": "index.js",
+  "repository": "http://github.com/Floriian/rcli",
+  "author": "Floriian",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "yargs": "^17.7.2"
+  },
+  "bin": {
+    "rcli": "./index.js"
+  }
+}
