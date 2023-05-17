@@ -8,10 +8,15 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "chalk": "^5.2.0",
-    "yargs": "^17.7.2"
+    "chalk": "4.1.2",
+    "commander": "^10.0.1",
+    "fs": "^0.0.1-security"
   },
   "bin": {
     "rcli": "./index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.1.7",
+    "typescript": "^5.0.4"
   }
 }
