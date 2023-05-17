@@ -12,10 +12,10 @@
       "commander": "^10.0.1",
       "fs": "^0.0.1-security",
       "redux": "0.0.0",
-      "react-router-dom": "0.0.0",
       "react": "0.0.0",
       "typescript": "0.0.0",
-      "taiwlindcss": "0.0.0"
+      "react-router-dom": "0.0.0",
+      "tailwindcss": "0.0.0"
     },
     "bin": {
       "rcli": "./index.js"
