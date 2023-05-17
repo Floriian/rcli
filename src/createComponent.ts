@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import chalk from "chalk";
 import { AllDependencies, Dependencies, PackageJSON } from "./types";
 import { featureDir, fileDir, processDir } from "./const";
-import { componentContent, reduxContent } from "./filecontents";
+import { componentContent, reduxContent, routerContent } from "./filecontents";
 
 export function createComponent(str: string) {
   const packageJSON = readFileSync(processDir + "/package.json", "utf-8");
@@ -14,6 +14,7 @@ export function createComponent(str: string) {
   const fileDirectory = fileDir(str);
 
   let isTypescript = false;
+
   let createModuleCss = true;
 
   if (!file.dependencies["react"])
@@ -60,6 +61,13 @@ export function createComponent(str: string) {
               reduxContent(str.toLowerCase())
             );
           case "react-router-dom":
+            writeFileSync(
+              fileDirectory + ".router" + fileExtension,
+              routerContent(
+                str.charAt(0).toUpperCase() + str.slice(1),
+                fileExtension
+              )
+            );
 
           default:
             writeFileSync(

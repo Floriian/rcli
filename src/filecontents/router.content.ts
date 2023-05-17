@@ -1,7 +1,11 @@
-export const routerContent = (name: string) => {
+export const routerContent = (name: string, type: ".js" | ".ts") => {
   return `
-    import type { RouteObject } from "react-router-dom";
+    ${
+      type === ".ts"
+        ? `import type { RouteObject } from "react-router-dom";`
+        : ``
+    }
 
-    export const ${name}Routes: RouteObject[] = [{}]
+    export const ${name}Routes${type === ".ts" ? `: RouteObject[]` : ``} = [{}]
     `;
 };
